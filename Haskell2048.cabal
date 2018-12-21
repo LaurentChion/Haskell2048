@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a4165cd146dcb90cbd1cce46f057b543116bdaa4864b39e2c03bda2d83b5e9bc
+-- hash: e40734e5d3fdc682c27d5f752e4925487b898fe6f73d593692728d634fb6db16
 
 name:           Haskell2048
 version:        0.1.0.0
@@ -27,11 +27,16 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Direction
+      Model
+      Game
+      IOGameManagement
   other-modules:
       Paths_Haskell2048
   hs-source-dirs:
       src
+      src/model
+      src/engine
   build-depends:
       base >=4.7 && <5
   default-language: Haskell2010

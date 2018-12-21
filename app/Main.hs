@@ -1,6 +1,11 @@
 module Main where
-
-import Lib
+import Game
+import Direction
 
 main :: IO ()
-main = sayHello
+
+conditionArret :: Direction -> Bool
+conditionArret UP = True
+conditionArret x = False
+
+main = newGame conditionArret
