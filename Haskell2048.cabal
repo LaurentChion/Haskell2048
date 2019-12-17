@@ -27,8 +27,8 @@ source-repository head
 
 library
   exposed-modules:
-      Direction
       Model
+      Event
       Game
       IOGameManagement
   other-modules:

@@ -2,9 +2,9 @@ name:                Haskell2048
 version:             0.1.0.0
 github:              "LaurentChion/Haskell2048"
 license:             BSD3
-author:              "Laurent CHION here"
+author:              "Laurent CHION"
 maintainer:          "example@example.com"
-copyright:           "2018 Laurent CHION here"
+copyright:           "2019 Laurent CHION"
 
 extra-source-files:
 - README.md

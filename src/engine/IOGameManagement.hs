@@ -1,34 +1,34 @@
 module IOGameManagement (
     waitForInput
 ) where 
-    import Direction
+import Event
 
-    -- Convert keyboard input to game action using pattern matching 
-    convertKeyToInput:: String -> Maybe Direction
-    convertKeyToInput "z" = Just UP 
-    convertKeyToInput "Z" = Just UP 
-    convertKeyToInput "q" = Just LEFT
-    convertKeyToInput "Q" = Just LEFT
-    convertKeyToInput "s" = Just DOWN
-    convertKeyToInput "S" = Just DOWN
-    convertKeyToInput "d" = Just RIGHT
-    convertKeyToInput "D" = Just RIGHT
-
-    convertKeyToInput "\ESC[A" = Just UP
-    convertKeyToInput "\ESC[C" = Just RIGHT
-    convertKeyToInput "\ESC[D" = Just LEFT
-    convertKeyToInput "\ESC[B" = Just DOWN
-
-    convertKeyToInput x = Nothing
+-- Convert keyboard input to game action using pattern matching 
+convertKeyToInput:: String -> Maybe Event
+convertKeyToInput k
+    | k == "z"    = Just MOVE_UP
+    | k == "Z"    = Just MOVE_UP
+    | k == "q"    = Just MOVE_LEFT
+    | k == "Q"    = Just MOVE_LEFT
+    | k == "s"    = Just MOVE_DOWN
+    | k == "S"    = Just MOVE_DOWN
+    | k == "d"    = Just MOVE_RIGHT
+    | k == "D"    = Just MOVE_RIGHT
+    | k == "exit" = Just EXIT
+    | otherwise   = Nothing
 
 -- Define prototype here
-    waitForInput :: IO Direction
-    waitForInput = do
-        putStrLn "What is your next move?"
-        userInput <- getLine
-        
-        case (convertKeyToInput userInput) of
-            Nothing -> do
-                putStrLn "z: UP, q: LEFT, s: DOWN, d: RIGHT"
-                >> waitForInput
-            Just a -> return a
+waitForInput :: IO Event
+waitForInput = do
+    putStrLn "What is your next move?"
+    userInput <- getLine
+    
+    case (convertKeyToInput userInput) of
+        Just a -> return a
+        Nothing -> do
+            putStrLn "z: to move UP"
+            putStrLn "q: to move LEFT"
+            putStrLn "s: to move DOWN"
+            putStrLn "d: to move RIGHT"
+            putStrLn "exit: to exit"
+            >> waitForInput

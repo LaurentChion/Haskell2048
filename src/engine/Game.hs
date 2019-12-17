@@ -1,29 +1,22 @@
 module Game (
     newGame
 ) where
-    
-    import IOGameManagement
-    import Direction 
+import IOGameManagement
+import Model
 
-    -- a new game start with a game over condition
-    newGame :: (Direction -> Bool) -> IO ()
-    newGame isGameFinished = do
-        putStrLn "Initialize new game state"
-        let state = DOWN
+-- a new game start with a game managing events
+newGame :: (State -> Bool) -> State -> IO ()
+newGame isGameFinished state =
+    putStrLn "Initialize new game state" >>
+    -- update until its finished
+    update isGameFinished state
 
-        -- update until its finished
-        update state isGameFinished
-        
-        putStrLn "Game over"
-        
-    
-    update :: Direction -> (Direction -> Bool) -> IO ()
-    update state isGameFinished =
-        putStrLn (show state) >>
-        if (isGameFinished state)
-            -- Game is finished
-            then
-                putStrLn "Game over"
-            -- Ask a new input
-            else
-                waitForInput >>= \direction -> update direction isGameFinished
+update :: (State -> Bool) -> State -> IO ()
+update isGameFinished state=
+    putStr "\ESC[2J" >>
+    putStrLn (show state) >>
+    if (isGameFinished state)
+        then -- Game is finished
+            putStrLn "Game over"
+        else -- Ask a new input
+            waitForInput >>= \direction -> update isGameFinished (changeState direction state)
