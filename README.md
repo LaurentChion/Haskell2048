@@ -1,7 +1,10 @@
 # project
 
-# Build
+## Build
 Inside an haskell environment run `cabal install`
 
-# Start
+## Start
 After build run `haskell2048`
+
+## Test
+`cabal test`
