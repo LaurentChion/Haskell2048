@@ -10,7 +10,10 @@ type Grid a = [[a]]
 data State = State {
     grid :: Grid Integer,
     last_event :: Event 
-} deriving (Show)
+}
+
+instance Show (State) where
+    show state = unlines $ map (\xs -> unwords $ map show xs) (grid state)
 
 changeLastKey :: Event -> State -> State
 changeLastKey event state = State (grid state) event 
