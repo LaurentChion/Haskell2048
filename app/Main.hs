@@ -12,10 +12,10 @@ stopCondition state
 
 -- Initial State
 initialGrid = [
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,2]]
+    [2,0,0,0],
+    [2,2,0,0],
+    [2,2,2,0],
+    [2,2,2,2]]
 initialEvent = START
 initialState = State initialGrid initialEvent
 
