@@ -4,10 +4,13 @@ module Model (
     changeState,
     -- for test purpose
     moveLeftReducerGrid,
+    moveTopReducerGrid,
+    moveBottomReducerGrid,
     horizontalFlip,
     verticalFlip
 ) where
 import Event
+import Data.List(transpose)
 
 type Grid a = [[a]]
 
@@ -29,38 +32,46 @@ absorbLeft (x : xs)
     | head xs == x = (x + head xs) : absorbLeft (tail xs)
     | otherwise = x : absorbLeft xs
 
+removeZeros :: [Int] -> [Int]
+removeZeros xs = filter (\x -> x /= 0) xs 
+
 fillWithZeros :: Int -> [Int] -> [Int]
 fillWithZeros dim xs 
     | length xs == dim = xs
     | otherwise = fillWithZeros dim (xs ++ [0]) 
 
 moveLeftReducerGrid :: Grid Int -> Grid Int
-moveLeftReducerGrid grid = map ((fillWithZeros 4).absorbLeft) grid
+moveLeftReducerGrid grid = map ((fillWithZeros 4).absorbLeft.removeZeros) grid
 
-moveLeftReducer :: State -> State
-moveLeftReducer state = State (moveLeftReducerGrid (grid state)) (last_event state)
+moveRightReducerGrid :: Grid Int -> Grid Int
+moveRightReducerGrid grid = verticalFlip (moveLeftReducerGrid (verticalFlip grid))
 
--- TODO
+moveTopReducerGrid :: Grid Int -> Grid Int
+moveTopReducerGrid grid = (verticalFlip.transpose) (moveLeftReducerGrid ((transpose.verticalFlip) grid))
+
+moveBottomReducerGrid :: Grid Int -> Grid Int
+moveBottomReducerGrid grid = (horizontalFlip.verticalFlip.transpose) (moveLeftReducerGrid ((transpose.verticalFlip.horizontalFlip) grid))
+
 horizontalFlip :: Grid Int -> Grid Int
-horizontalFlip grid = grid
+horizontalFlip grid = reverse grid
 
 verticalFlip :: Grid Int -> Grid Int
-verticalFlip grid = grid
+verticalFlip grid = map reverse grid 
 
 moveReducer :: Event -> State -> State
 moveReducer event state
-    | event == MOVE_UP = State ( (grid state) ) (last_event state)
+    | event == MOVE_UP = State (moveTopReducerGrid (grid state)) (last_event state) 
     | event == MOVE_LEFT = State (moveLeftReducerGrid (grid state)) (last_event state)
-    | event == MOVE_DOWN = State ((grid state)) (last_event state)
-    | event == MOVE_RIGHT = State ((grid state)) (last_event state)
+    | event == MOVE_DOWN = State (moveBottomReducerGrid (grid state)) (last_event state)
+    | event == MOVE_RIGHT = State (moveRightReducerGrid (grid state)) (last_event state)
     | otherwise = state
 
 changeState :: Event -> State -> State
 changeState event state = case event of 
-    MOVE_UP -> changeLastKey event state
-    MOVE_LEFT -> changeLastKey event $ moveLeftReducer state
-    MOVE_DOWN -> changeLastKey event state
-    MOVE_RIGHT -> changeLastKey event state
+    MOVE_UP -> changeLastKey event $ moveReducer event state
+    MOVE_LEFT -> changeLastKey event $ moveReducer event state
+    MOVE_DOWN -> changeLastKey event $ moveReducer event state
+    MOVE_RIGHT -> changeLastKey event $ moveReducer event state
     EXIT -> changeLastKey event state -- save current state and change last key
     START -> changeLastKey event state
 

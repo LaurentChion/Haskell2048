@@ -4,6 +4,8 @@ import Control.Exception (evaluate)
 
 import Model(
   moveLeftReducerGrid,
+  moveTopReducerGrid,
+  moveBottomReducerGrid,
   horizontalFlip,
   verticalFlip)
 
@@ -13,15 +15,39 @@ main = hspec $ do
   describe "move to left" $ do
     it "should return a correct aggregation to the left" $ do
         moveLeftReducerGrid [
-            [2,0,0,0],
-            [2,2,0,0],
-            [2,2,2,0],
-            [2,2,2,2]]
+            [0,2,0,0],
+            [0,2,2,0],
+            [0,2,2,2],
+            [0,4,2,2]]
         `shouldBe` [
             [2,0,0,0],
             [4,0,0,0],
             [4,2,0,0],
             [4,4,0,0]]
+  describe "move to the top" $ do
+    it "should return a correct aggregation to the top" $ do
+        moveTopReducerGrid [
+            [0,2,0,0],
+            [0,2,2,0],
+            [0,2,2,2],
+            [0,4,2,2]]
+        `shouldBe` [
+            [0,4,4,4],
+            [0,2,2,0],
+            [0,4,0,0],
+            [0,0,0,0]]
+  describe "move to the bottom" $ do
+    it "should return a correct aggregation to the bottom" $ do
+        moveBottomReducerGrid [
+            [0,2,0,0],
+            [0,2,2,0],
+            [0,2,2,2],
+            [0,4,2,2]]
+        `shouldBe` [
+            [0,0,0,0],
+            [0,2,0,0],
+            [0,4,2,0],
+            [0,4,4,4]]
 
   describe "move to left 2" $ do
     it "should return a correct aggregation to the left" $ do
