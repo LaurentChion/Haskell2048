@@ -2,7 +2,10 @@ module Model (
     State(..),
     Grid,
     changeState,
-    moveLeftReducerGrid -- for test purpose
+    -- for test purpose
+    moveLeftReducerGrid,
+    horizontalFlip,
+    verticalFlip
 ) where
 import Event
 
@@ -36,6 +39,13 @@ moveLeftReducerGrid grid = map ((fillWithZeros 4).absorbLeft) grid
 
 moveLeftReducer :: State -> State
 moveLeftReducer state = State (moveLeftReducerGrid (grid state)) (last_event state)
+
+-- TODO
+horizontalFlip :: Grid Int -> Grid Int
+horizontalFlip grid = grid
+
+verticalFlip :: Grid Int -> Grid Int
+verticalFlip grid = grid
 
 moveReducer :: Event -> State -> State
 moveReducer event state

@@ -2,7 +2,7 @@ module Game (
     newGame
 ) where
 import IOGameManagement
-import Model
+import Model(State, changeState)
 
 -- a new game start with a game managing events
 newGame :: (State -> Bool) -> State -> IO ()
@@ -12,7 +12,7 @@ newGame isGameFinished state =
     update isGameFinished state
 
 update :: (State -> Bool) -> State -> IO ()
-update isGameFinished state=
+update isGameFinished state =
     putStr "\ESC[2J" >>
     putStrLn (show state) >>
     if (isGameFinished state)

@@ -6,9 +6,9 @@ import Event
 stopCondition :: State -> Bool
 stopCondition state 
     | last_event state  == EXIT = True -- Do user want to quit
-    -- Do games is over ?
+    -- TODO: Do games is over ?
     -- | isFinished (grid state) = True
-    | otherwise               = False
+    | otherwise = False
 
 -- Initial State
 initialGrid = [
